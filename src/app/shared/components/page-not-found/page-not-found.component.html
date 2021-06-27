@@ -1,0 +1,21 @@
+<app-navbar></app-navbar>
+<section>
+  <div class="container">
+    <div class="jumbotron">
+      <div class="d-flex mx-auto" style="width:700px">
+        <i class="fas fa-exclamation-triangle font-size-max"></i>
+        <div class="p-3">
+          <h1>Error 404</h1>
+          <p class="text-left">
+            La URL {{routes}} no ha sido encontrada en este servidor.
+          </p>
+        </div>
+      </div>
+      <div class="text-center">
+        <button type="button" name="button" class="btn btn-secondary" [routerLink]="['/Home']">Volver al home</button>
+      </div>
+    </div>
+
+  </div>
+</section>
+<app-footer></app-footer>

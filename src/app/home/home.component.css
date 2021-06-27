@@ -1,0 +1,9 @@
+.pelicula {
+    border: 1px silver solid;
+    margin: 5px 0px 5px 0px;
+    background-color: snow;
+}
+
+.imgCart {
+    width: 6rem;
+}

@@ -1,0 +1,120 @@
+<app-navbar (verCarro)="openCart()"></app-navbar>
+<section>
+    <!-- <div class="loading mt-4" *ngIf="loading"></div> -->
+    <div class="container">
+        <div class="contenedorGeneral">
+            <h1> Productos</h1>
+            <hr>
+            <div class="row">
+              <div class="loading mt-3" *ngIf="loadingProduct"></div>
+                <div *ngFor="let product of products" class="col-md-5 col-xs-12 col-xl-3">
+                    <div class="card-columns d-flex justify-content-center">
+                        <div class="card animated fadeIn fast pelicula list-group-item " style="width: 18rem;">
+                            <img class="card-img-top img-thumbnail " [src]="'https://'+product.image">
+                            <div class="card-body ">
+                                <h4 class="card-title text-center">{{product.description}}</h4>
+                                <p class="card-text text-center"> {{product.price}}</p>
+                                <p class="card-text text-center"><small class="text-muted">{{product.brand}}</small>
+                                </p>
+                                <div class="col-md-12 text-center">
+                                    <button type="button" (click)="addCart(product)"
+                                        class="btn btn-primary">Agregar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div *ngIf="!products?.length && !loadingProduct" class="alert alert-warning text-center">No existen productos disponibles
+                </div>
+            </div>
+        </div>
+    </div>
+    <ng-template #content let-modal>
+        <div class="modal-header">
+            <h4 class="modal-title" id="modal-basic-title">Tu carro de compras</h4>
+        </div>
+        <div class="modal-body">
+            <div *ngIf="productCart?.length" class="form-group">
+                <div class="container">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Imgen</th>
+                                <!-- <th>Marca</th> -->
+                                <th>Producto</th>
+                                <th>Precio</th>
+                                <th class="text-center">Cantidad</th>
+                                <th>&nbsp;</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let p of productCart; let i=index;">
+                                <td><img class="imgCart" [src]="'https://'+p.image" alt=""></td>
+                                <!-- <td>{{p.brand}}</td> -->
+                                <td>{{p.description}}<br>{{p.brand}}</td>
+                                <td>{{p.price | currency: '$' : 'symbol' : '1.0-0'}}</td>
+                                <td class="text-center">
+                                    <span (click)="deleteItemCart(p)">
+                                        <fa-icon class="pointer" [icon]="faMinusCircle"> </fa-icon>
+                                    </span>
+                                    {{p.quantity}}
+                                    <span (click)="addCart(p,false)">
+                                        <fa-icon class="pointer" [icon]="faPlusCircle"> </fa-icon>
+                                    </span>
+                                </td>
+                                <td><span title="Eliminar producto" class="pointer" (click)="removeProductCart(p)">
+                                        <fa-icon [icon]="faTrashAlt"> </fa-icon>
+                                    </span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div>
+                    <div class="loading mt-3" *ngIf="loadingDiscount"></div>
+                    <div class="mt-3" *ngIf="!loadingDiscount">
+                        <div *ngIf="discountApplied.discount > 0" class="alert alert-success" role="alert">
+                            Se aplicó un descuento de {{this.discountApplied.discount| currency: '$' : 'symbol' :
+                            '1.0-0'
+                            }} por
+                            haber
+                            comprado {{this.discountApplied.threshold | currency: '$' : 'symbol' : '1.0-0'}} de
+                            productos {{this.discountApplied.brand}}!</div>
+                        <div class="alert alert-primary" *ngIf="discountApplied.brand !== bestOffer.brand">Agrega
+                            <b>{{bestOffer.balance| currency: '$' : 'symbol' : '1.0-0' }}</b> más en productos
+                            <b>{{bestOffer.brand}}</b> y
+                            aprovecha un
+                            descuento total de <b> {{bestOffer.discount| currency: '$' : 'symbol' : '1.0-0'
+                                }}</b> en tu compra!
+                        </div>
+                        <table class="table">
+                            <tbody>
+                                <tr>
+                                    <th class="text-center">Sub Total</th>
+                                    <td>{{totals.subtotal| currency: '$' : 'symbol' : '1.0-0'}}</td>
+                                </tr>
+                                <tr>
+                                    <th class="text-center">Descuento</th>
+                                    <td><span *ngIf="totals.discount>0">-</span>{{totals.discount| currency: '$' :
+                                        'symbol' : '1.0-0' }}</td>
+                                <tr>
+                                    <th class="text-center">Total a pagar</th>
+                                    <td>{{totals.total| currency: '$' : 'symbol' : '1.0-0'}}</td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="!productCart?.length" class="alert alert-warning text-center">No ha agregado productos al carro
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-outline-dark" (click)="modal.close('Cerrar')">Cerrar</button>
+        </div>
+    </ng-template>
+
+</section>
+<app-footer></app-footer>
